@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pokemon Basics</title>
+    <link rel="stylesheet" href="css/main.css">
+    <link href="https://fonts.cdnfonts.com/css/g-guarantee" rel="stylesheet">
+    <!-- import jquery Library -->
+    <script src="js/jquery-3.7.1.min.js"></script>
+    <style>
+        main{
+            position: relative;
+            height:500px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <img class="logo" src="img/logo.png" alt="Pokémon">
+        <h1>1. jQuery Exercises</h1>
+
+    </header>
+    <nav>
+        <ul>
+            <li><a href="index.html">Click</a></li>
+            <li><a href="mouse.html">Mouse</a></li>
+            <li><a href="dom.html">DOM</a></li>
+            <li><a href="animation.html">Animation</a></li>
+        </ul>
+    </nav>
+    <main>
+        <h2>Exercise 4: Animation</h2>
+        <div id="runaway">
+        </div>
+        <script>
+            $(document).ready(function() {
+                // Exercise 4 Instructions:
+                // When the user tries to catch Psyduck with the cursor it will try to run away!
+                // use jQuery to animate the "runaway" div to move it randomly.
+                // a. Get the event trigger on the runaway div
+                // b. Get the parent element size (width and height).
+                //    Remove from each 100px to account for the size of the runaway div.
+                // c. Calculate new random left and top values between 0 and height/width of main
+                // d. Animate the touched runaway div by changing its css propertied left and top
+
+                var $runaway = $('#runaway');
+                var $main = $runaway.parent();
+
+                // Ensure the runaway div is positioned and sized so left/top animation works.
+                $runaway.css({
+                    position: 'absolute',
+                    width: '100px',
+                    height: '100px',
+                    // try to show Psyduck if available; otherwise leave background blank
+                        'background-image': "url('img/animations/psyduck.gif')",
+                    'background-size': 'contain',
+                    'background-repeat': 'no-repeat'
+                });
+
+                // place it initially in the top-left corner (small offset)
+                $runaway.css({ left: '10px', top: '10px' });
+
+                $runaway.on('mouseenter', function () {
+                    // parent dimensions
+                    let maxW = Math.max(0, $main.width() - 100);
+                    let maxH = Math.max(0, $main.height() - 100);
+
+                    var newLeft = Math.floor(Math.random() * (maxW + 1));
+                    var newTop = Math.floor(Math.random() * (maxH + 1));
+
+                    // animate to new position; stop current animations to avoid queueing
+                    $runaway.stop(true).animate({ left: newLeft + 'px', top: newTop + 'px' }, 400);
+                });
+
+            });
+        </script>
+    </main>
+</body>
+</html>

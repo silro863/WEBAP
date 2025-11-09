@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pokemon Basics</title>
+    <link rel="stylesheet" href="css/main.css">
+    <link href="https://fonts.cdnfonts.com/css/g-guarantee" rel="stylesheet">
+    <!-- import jquery Library -->
+     <script src="js/jquery-3.7.1.min.js"></script>
+</head>
+
+<body>
+    <header>
+        <img class="logo" src="img/logo.png" alt="Pokémon">
+        <h1>1. jQuery Exercises</h1>
+    </header>
+    <nav>
+        <ul>
+            <li><a href="index.html">Click</a></li>
+            <li><a href="mouse.html">Mouse</a></li>
+            <li><a href="dom.html">DOM</a></li>
+            <li><a href="animation.html">Animation</a></li>
+        </ul>
+    </nav>
+    <main>
+        <h2>Exercise 1: Basic Interaction</h2>
+        <label for="textInput">Nickname:</label>
+        <input type="text" id="userInput" placeholder="Type your name here">
+        <button type="button" id="btnRegister">Register</button>
+        <p>Welcome <span id="showplayer">Player</span>!</p>
+        <script>
+            $(document).ready(function () {
+                // Exercise 1 Instructions:
+                // When the "Register" button is clicked,
+                // use jQuery to transfer the text of input field to the <span> element with
+                // the id "showplayer". Empty the input field.
+                
+                
+                $('#btnRegister').on('click', function () {
+                    let name = $('#userInput').val();
+                    // set the span text to the input value
+                    $('#showplayer').text(name);
+                    // clear the input
+                    $('#userInput').val('');
+
+        }); // end click handler
+        }); // end document.ready
+        </script>
+    </main>
+</body>
+
+</html>
