@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="css/main.css">
     <link href="https://fonts.cdnfonts.com/css/g-guarantee" rel="stylesheet">
     <!-- import jquery Library -->
+     <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
 </head>
 
 <body>
@@ -35,6 +36,32 @@
                 // Also the Button text is changed to "Show answer"
                 // If the user clicks the Button again the answer is loaded from answer.txt into txtHelp.
                 // Make the Button disapear after the answer has been given.
+                $(document).ready(function () {
+                    var state = 0; 
+
+                    $('#btnHelp').on('click', function () {
+                        var $btn = $(this);
+                        if (state === 0) {
+                            // load jokeHelp.txt for the tip
+                            $('#txtHelp').load('assets/joke/jokeHelp.txt', function (response, status, xhr) {
+                                if (status === 'error') {
+                                    $('#txtHelp').text('Tip not available.');
+                                }
+                                $btn.text('Show answer');
+                                state = 1;
+                            });
+                        } else if (state === 1) {
+                            // load answer-Tom-Desktop.txt for the answer
+                            $('#txtHelp').load('assets/joke/answer-Tom-Desktop.txt', function (response, status, xhr) {
+                                if (status === 'error') {
+                                    $('#txtHelp').text('Answer not available.');
+                                }
+                                $btn.hide();
+                                state = 2;
+                            });
+                        }
+                    });
+                });
         </script>
     </main>
 </body>

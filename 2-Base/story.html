@@ -7,7 +7,7 @@
     <title>Pokemon Basics</title>
     <link rel="stylesheet" href="css/main.css">
     <link href="https://fonts.cdnfonts.com/css/g-guarantee" rel="stylesheet">
-    <script src="js/code.jquery.com_jquery-3.7.1.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
 </head>
 
 <body>
@@ -39,7 +39,44 @@
                         // Initially Chapter Nr 1. is loaded. The user can then navigate with the Buttons "prev" and "next".
                         // Show the appropritate chapters upon user interaction in the div "chapTxt".
                     $(document).ready(function () {
-                            
+                        var current = 1;
+                        var maxChapters = 6; // update if more chapters are added
+
+                        var $chapTxt = $('#chapTxt');
+                        var $chapterNr = $('#chapterNr');
+
+                        function updateButtons() {
+                            $('#prev').prop('disabled', current <= 1);
+                            $('#next').prop('disabled', current >= maxChapters);
+                        }
+
+                        function loadChapter(n) {
+                            $chapterNr.text(n);
+                            $chapTxt.text('Loading chapter ' + n + '...');
+                            $chapTxt.load('assets/story/' + n + '.txt', function (response, status, xhr) {
+                                if (status === 'error') {
+                                    $chapTxt.text('Chapter not available.');
+                                }
+                                updateButtons();
+                            });
+                        }
+
+                        $('#prev').on('click', function () {
+                            if (current > 1) {
+                                current--;
+                                loadChapter(current);
+                            }
+                        });
+
+                        $('#next').on('click', function () {
+                            if (current < maxChapters) {
+                                current++;
+                                loadChapter(current);
+                            }
+                        });
+
+                        // initial load
+                        loadChapter(current);
                     });
                 </script>
     </main>

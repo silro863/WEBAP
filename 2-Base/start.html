@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="css/main.css">
     <link href="https://fonts.cdnfonts.com/css/g-guarantee" rel="stylesheet">
     <!-- import jquery Library -->
+     <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
 </head>
 
 <body>
@@ -38,6 +39,27 @@
                 // Exercise 3 Instructions:
                 // When the user clicks on a pokemon's button the informations are loaded into div startinfo.
                 // Informations are stored in the assets folder. Now in html format.
+
+                var $info = $('.startinfo');
+
+                $('.startpoke').on('click', function () {
+                    var alt = $(this).find('img').attr('alt') || '';
+                    var name = alt.trim().toLowerCase();
+                    if (!name) {
+                        // try to infer from filename
+                        var src = $(this).find('img').attr('src') || '';
+                        name = src.split('/').pop().split('.')[0];
+                    }
+
+                    var url = 'assets/starters/' + name + '.html';
+
+                    // load the HTML fragment into the info panel
+                    $info.load(url, function (response, status) {
+                        if (status === 'error') {
+                            $info.html('<p>Information not available for ' + name + '.</p>');
+                        }
+                    });
+                });
             });
         </script>
     </main>

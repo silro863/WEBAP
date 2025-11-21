@@ -71,6 +71,73 @@
                 // available dictionary terms for this letter
                 // The user can now click on a term from the "preview" side and 
                 // the available term info will be loaded into the "entry" side
+                var cache = null;
+
+                function renderPreview(letter) {
+                    var $preview = $('#preview');
+                    $preview.empty();
+
+                    var $section = cache.find('#' + letter + '.section');
+                    if (!$section.length) {
+                        $preview.text('No terms for "' + letter + '".');
+                        $('#entry').empty();
+                        return;
+                    }
+
+                    // build a list of clickable terms
+                    var $list = $('<ul>');
+                    $section.find('.entry').each(function () {
+                        var id = $(this).attr('id');
+                        var term = $(this).find('.term').first().text();
+                        var $li = $('<li>');
+                        var $a = $('<a href="#" class="term-link">').text(term).attr('data-id', id);
+                        $li.append($a);
+                        $list.append($li);
+                    });
+                    $preview.append($list);
+                    // clear entry area
+                    $('#entry').empty();
+                }
+
+                function renderEntry(id) {
+                    var $entry = cache.find('#' + id + '.entry');
+                    if (!$entry.length) {
+                        $('#entry').text('Entry not found.');
+                        return;
+                    }
+                    // show a clone to avoid moving nodes out of cache
+                    $('#entry').html($entry.clone());
+                }
+
+                $('#alpha').on('change', function () {
+                    var letter = $(this).val();
+                    if (!letter) return;
+                    if (cache) {
+                        renderPreview(letter);
+                        return;
+                    }
+                    // fetch and cache the dict sections
+                    $('#preview').text('Loading dictionary...');
+                    $.ajax({
+                        url: 'assets/dictAZ.html',
+                        type: 'GET',
+                        dataType: 'html',
+                        success: function (data) {
+                            cache = $('<div>').append($.parseHTML(data));
+                            renderPreview(letter);
+                        },
+                        error: function () {
+                            $('#preview').text('Failed to load dictionary data.');
+                        }
+                    });
+                });
+
+                // delegate click on preview terms
+                $('#preview').on('click', '.term-link', function (e) {
+                    e.preventDefault();
+                    var id = $(this).attr('data-id');
+                    renderEntry(id);
+                });
 
             });
         </script>
