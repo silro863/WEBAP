@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pokemon Basics</title>
+    <link rel="stylesheet" href="css/main.css">
+    <link href="https://fonts.cdnfonts.com/css/g-guarantee" rel="stylesheet">
+    <!-- import jquery Library -->
+     <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+</head>
+
+<body>
+    <header>
+        <img class="logo" src="img/logo.png" alt="Pokémon">
+        <h1>2. Ajax static content Exercises</h1>
+    </header>
+    <nav>
+        <ul>
+            <li><a href="index.html">Joke</a></li>
+            <li><a href="story.html">Story</a></li>
+            <li><a href="start.html">Starters</a></li>
+            <li><a href="dict.html">Dictionary</a></li>
+        </ul>
+    </nav>
+    <main>
+        <h2>Exercise 4: Loading html partially</h2>
+        <h1>Dictionary</h1>
+        <label for="alpha">Select a letter:</label>
+        <div class="selectwrapper">
+            <select name="alpha" id="alpha">
+                <option value="" disabled selected>Choose</option>
+                <option value="A">A</option>
+                <option value="B">B</option>
+                <option value="C">C</option>
+                <option value="D">D</option>
+                <option value="E">E</option>
+                <option value="F">F</option>
+                <option value="G">G</option>
+                <option value="H">H</option>
+                <option value="I">I</option>
+                <option value="J">J</option>
+                <option value="K">K</option>
+                <option value="L">L</option>
+                <option value="M">M</option>
+                <option value="N">N</option>
+                <option value="O">O</option>
+                <option value="P">P</option>
+                <option value="Q">Q</option>
+                <option value="R">R</option>
+                <option value="S">S</option>
+                <option value="T">T</option>
+                <option value="U">U</option>
+                <option value="V">V</option>
+                <option value="W">W</option>
+                <option value="X">X</option>
+                <option value="Y">Y</option>
+                <option value="Z">Z</option>
+            </select>
+        </div>
+        <br>
+        <section id="preview">
+        </section>
+        <section id="entry"></section>
+        <script>
+            $(document).ready(function () {
+                // Exercise 4 Instructions:
+                // The User is presented with a select dropdown. 
+                // Upon selecting a letter the "preview" window is filled with all 
+                // available dictionary terms for this letter
+                // The user can now click on a term from the "preview" side and 
+                // the available term info will be loaded into the "entry" side
+
+            });
+        </script>
+    </main>
+</body>
+
+</html>

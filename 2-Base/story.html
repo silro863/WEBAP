@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pokemon Basics</title>
+    <link rel="stylesheet" href="css/main.css">
+    <link href="https://fonts.cdnfonts.com/css/g-guarantee" rel="stylesheet">
+    <script src="js/code.jquery.com_jquery-3.7.1.min.js"></script>
+</head>
+
+<body>
+    <header>
+        <img class="logo" src="img/logo.png" alt="Pokémon">
+        <h1>2. Ajax static content Exercises</h1>
+    </header>
+    <nav>
+        <ul>
+            <li><a href="index.html">Text</a></li>
+            <li><a href="story.html">Story</a></li>
+            <li><a href="start.html">Starters</a></li>
+            <li><a href="dict.html">Dictionary</a></li>
+        </ul>
+    </nav>
+    <main>
+        <h2>Exercise 2: Loading text asyncronously</h2>
+        <h3>The Legendary Encounter</h3>
+        <h3 class="inline">
+            <button id="prev" type="button" class="narrow inline">&#x2190;</button>
+            Chapter <span id="chapterNr">1</span>
+            <button id="next" class="narrow inline" type="button">&#x2192;</button>
+        </h3>
+                <p id="chapTxt"></p>
+                <script>
+                        // Exercise 2 Instructions:
+                        // We want to show a Story to the User 
+                        // The chapters are stored in text files in the assets folder. They are sorted by chapters.
+                        // Initially Chapter Nr 1. is loaded. The user can then navigate with the Buttons "prev" and "next".
+                        // Show the appropritate chapters upon user interaction in the div "chapTxt".
+                    $(document).ready(function () {
+                            
+                    });
+                </script>
+    </main>
+</body>
+
+</html>

@@ -46,25 +46,39 @@
 
                 $(document).ready(function () {
                     var $list = $('main ul');
+                    // initialize next level from current items
+                    var nextLevel = $list.children('li').length + 1;
 
+                    function updateButtons() {
+                        $('#btnAddLevel').prop('disabled', nextLevel > 10);
+                        $('#btnRemoveLevel').prop('disabled', $list.children('li').length === 0);
+                    }
+
+                    // add level (simple, uses nextLevel counter)
                     $('#btnAddLevel').on('click', function () {
-                        var count = $list.find('li').length;
-                        if (count >= 10) {
+                        if (nextLevel > 10) {
                             alert('No more can be added');
                             return;
                         }
-                        var next = count + 1;
-                        $list.append('<li>Level ' + next + '</li>');
+                        $list.append($('<li>').text('Level ' + nextLevel));
+                        nextLevel++;
+                        updateButtons();
                     });
 
+                    // remove last level (simple)
                     $('#btnRemoveLevel').on('click', function () {
-                        var count = $list.find('li').length;
-                        if (count === 0) {
+                        var $items = $list.children('li');
+                        if ($items.length === 0) {
                             alert('No level');
                             return;
                         }
-                        $list.find('li').last().remove();
+                        $items.last().remove();
+                        nextLevel = Math.max(1, $list.children('li').length + 1);
+                        updateButtons();
                     });
+
+                    // set initial button states
+                    updateButtons();
                 });
         </script>
 

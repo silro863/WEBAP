@@ -49,13 +49,11 @@
                 // TODO code here: //
 
                 $('.startpoke').on('mouseenter', function () {
-                    var prefix = 'A. ';
-                    $('#hovered').text(prefix + 'Mouse entered.');
+                    $('#hovered').text('A. Mouse entered.');
                     var pokemonName = $(this).find('img').attr('alt') || 'nothing';
                     $('#current').text(pokemonName);
                 }).on('mouseleave', function () {
-                    var prefix = 'A. ';
-                    $('#hovered').text(prefix + 'Mouse left.');
+                    $('#hovered').text('A. Mouse left.');
                     $('#current').text('nothing');
                 });
                 
