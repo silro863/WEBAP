@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pokemon Basics</title>
+    <link rel="stylesheet" href="css/main.css">
+    <link href="https://fonts.cdnfonts.com/css/g-guarantee" rel="stylesheet">
+    <!-- import jquery Library -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <!-- import jquery UI Library -->
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
+    <style>
+        .warning {
+            color: #d9534f;
+            font-weight: bold;
+            font-size: 0.9em;
+            margin-top: 5px;
+        }
+        .success {
+            color: #5cb85c;
+            font-weight: bold;
+            font-size: 0.9em;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <img class="logo" src="img/logo.png" alt="Pokémon">
+        <h1>3. Ajax dynamic content Exercises</h1>
+    </header>
+    <main>
+        <h2>Exercise 1: Loading Php Sources asyncronously</h2>
+        <h3>Who are you?</h3>
+
+        <form action="./php/doRegister.php" method="post">
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" required>
+            <p id="UWarn" class="warning"></p>
+
+            <label for="birthdate">Birth date:</label>
+            <input type="date" id="birthdate" name="birthdate" required>
+
+            <label for="gender">Gender:</label>
+            <select id="gender" name="gender">
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+                <option value="Other">Other</option>
+            </select>
+
+            <label for="hometown">Hometown:</label>
+            <input list="towns" name="hometown" id="hometown" required>
+            <datalist id="towns">
+                <option value="loading...">
+            </datalist>
+
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required>
+
+            <label for="passwordc">Password confirm:</label>
+            <input type="password" id="passwordc" name="passwordc" required>
+            <p id="PWarn" class="warning"></p>
+
+            <input type="submit" value="Submit">
+        </form>
+        <script>
+            // Exercise 1 Instructions:
+            // We want to gather the Users information to create a profile in the database later on.
+            // a. Complete the php script to serve the content of the datalist "hometowns".
+            // b. On page ready, asynchronously fill the datalist with hometowns.
+            // c. When the user types in the username input field, send the just typed information to a php script for checking.
+            //    A username can not exsist twice in the system. If the username already exsists, 
+            //    return an error and show the said error in the predefined html element "Uwarn"
+            // d. Check if the user has entered the password confirmation correctly. Throw an error accordingly.
+            // e. Use the classes "warning" and "success" to color code feedback messages for the password and username.
+
+            $(document).ready(function () {
+                // a & b. Load hometowns into datalist
+                $.get('php/genHometowns.php', function (data) {
+                    $('#towns').html(data);
+                });
+
+                // c. Check username availability on input
+                let checkTimeout;
+                $('#username').on('input', function () {
+                    clearTimeout(checkTimeout);
+                    var username = $(this).val().trim();
+                    var $warn = $('#UWarn');
+                    
+                    if (!username) {
+                        $warn.text('').removeClass('warning success');
+                        return;
+                    }
+
+                    // Debounce: check after user stops typing for 500ms
+                    checkTimeout = setTimeout(function () {
+                        $.post('php/checkUsername.php', { username: username }, function (response) {
+                            if (response.status === 'error') {
+                                $warn.text(response.message).removeClass('success').addClass('warning');
+                            } else {
+                                $warn.text('Username available').removeClass('warning').addClass('success');
+                            }
+                        }, 'json').fail(function () {
+                            $warn.text('Error checking username').removeClass('success').addClass('warning');
+                        });
+                    }, 500);
+                });
+
+                // d & e. Check password match on input
+                $('#passwordc').on('input', function () {
+                    var password = $('#password').val();
+                    var confirm = $(this).val();
+                    var $warn = $('#PWarn');
+
+                    if (!confirm) {
+                        $warn.text('').removeClass('warning success');
+                        return;
+                    }
+
+                    if (password !== confirm) {
+                        $warn.text('Passwords do not match').removeClass('success').addClass('warning');
+                    } else {
+                        $warn.text('Passwords match').removeClass('warning').addClass('success');
+                    }
+                });
+
+                // Also check when password changes
+                $('#password').on('input', function () {
+                    if ($('#passwordc').val()) {
+                        $('#passwordc').trigger('input');
+                    }
+                });
+            });
+        </script>
+    </main>
+</body>
+
+</html>

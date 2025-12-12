@@ -9,6 +9,80 @@
     <link href="https://fonts.cdnfonts.com/css/g-guarantee" rel="stylesheet">
     <!-- import jquery Library -->
      <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <style>
+        #preview ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        #preview li {
+            margin: 8px 0;
+            padding: 8px 12px;
+            background-color: #f5f5f5;
+            border-radius: 4px;
+            transition: background-color 0.2s ease;
+        }
+
+        #preview li:hover {
+            background-color: #e8e8e8;
+        }
+
+        .term-link {
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+            cursor: pointer;
+            display: block;
+        }
+
+        .term-link:hover {
+            color: #0055A4;
+        }
+
+        #entry {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #f9f9f9;
+            border-left: 4px solid #FFCB05;
+            border-radius: 4px;
+        }
+
+        #entry h3 {
+            color: #333;
+            margin-top: 0;
+        }
+
+        #entry .part {
+            color: #666;
+            font-style: italic;
+            margin: 10px 0 5px 0;
+        }
+
+        #entry .definition {
+            color: #444;
+            line-height: 1.6;
+        }
+
+        #entry .quote {
+            background-color: #fff;
+            padding: 10px 12px;
+            border-left: 3px solid #0055A4;
+            margin: 10px 0;
+            font-size: 0.95em;
+        }
+
+        #entry .quote-line {
+            margin: 5px 0;
+        }
+
+        #entry .quote-author {
+            text-align: right;
+            font-weight: bold;
+            color: #0055A4;
+            margin-top: 8px;
+        }
+    </style>
 </head>
 
 <body>
@@ -61,7 +135,7 @@
         </div>
         <br>
         <section id="preview">
-        </section>
+        </section> 
         <section id="entry"></section>
         <script>
             $(document).ready(function () {
