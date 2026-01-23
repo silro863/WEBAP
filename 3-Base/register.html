@@ -8,24 +8,8 @@
     <link rel="stylesheet" href="css/main.css">
     <link href="https://fonts.cdnfonts.com/css/g-guarantee" rel="stylesheet">
     <!-- import jquery Library -->
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
-    <!-- import jquery UI Library -->
-    <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
-    <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
-    <style>
-        .warning {
-            color: #d9534f;
-            font-weight: bold;
-            font-size: 0.9em;
-            margin-top: 5px;
-        }
-        .success {
-            color: #5cb85c;
-            font-weight: bold;
-            font-size: 0.9em;
-            margin-top: 5px;
-        }
-    </style>
+    <script type="text/javascript" src="js/code.jquery.com_jquery-3.7.1.min.js"></script>
+    <script type="text/javascript" src="js/code.jquery.com_ui_1.13.2_jquery-ui.js"></script>
 </head>
 
 <body>
@@ -36,7 +20,6 @@
     <main>
         <h2>Exercise 1: Loading Php Sources asyncronously</h2>
         <h3>Who are you?</h3>
-
         <form action="./php/doRegister.php" method="post">
             <label for="username">Username:</label>
             <input type="text" id="username" name="username" required>
@@ -70,70 +53,46 @@
         <script>
             // Exercise 1 Instructions:
             // We want to gather the Users information to create a profile in the database later on.
-            // a. Complete the php script to serve the content of the datalist "hometowns".
-            // b. On page ready, asynchronously fill the datalist with hometowns.
-            // c. When the user types in the username input field, send the just typed information to a php script for checking.
-            //    A username can not exsist twice in the system. If the username already exsists, 
-            //    return an error and show the said error in the predefined html element "Uwarn"
+            // a. Write a php script to serve the content of the datalist "hometowns".
+            // b. On page ready asynchronously load said content.
+            // c. When the user types in the username input send the just typed information to a php script for checking.
+            //    A username can not exsist twice in the system. If the username exsists, return an error and 
+            //    show the said error in the predefined html element "Uwarn"
+            // Make the Button disapear after the answer has been given.
             // d. Check if the user has entered the password confirmation correctly. Throw an error accordingly.
-            // e. Use the classes "warning" and "success" to color code feedback messages for the password and username.
-
             $(document).ready(function () {
-                // a & b. Load hometowns into datalist
-                $.get('php/genHometowns.php', function (data) {
-                    $('#towns').html(data);
-                });
 
-                // c. Check username availability on input
-                let checkTimeout;
-                $('#username').on('input', function () {
-                    clearTimeout(checkTimeout);
-                    var username = $(this).val().trim();
-                    var $warn = $('#UWarn');
-                    
-                    if (!username) {
-                        $warn.text('').removeClass('warning success');
-                        return;
-                    }
+                //Fill the datalist for the available towns
+                $("#towns").load("php/genHometowns.php");
 
-                    // Debounce: check after user stops typing for 500ms
-                    checkTimeout = setTimeout(function () {
-                        $.post('php/checkUsername.php', { username: username }, function (response) {
-                            if (response.status === 'error') {
-                                $warn.text(response.message).removeClass('success').addClass('warning');
-                            } else {
-                                $warn.text('Username available').removeClass('warning').addClass('success');
-                            }
-                        }, 'json').fail(function () {
-                            $warn.text('Error checking username').removeClass('success').addClass('warning');
-                        });
-                    }, 500);
-                });
-
-                // d & e. Check password match on input
+                // Function to check if the passwords match
                 $('#passwordc').on('input', function () {
                     var password = $('#password').val();
-                    var confirm = $(this).val();
-                    var $warn = $('#PWarn');
+                    var confirmPassword = $(this).val();
 
-                    if (!confirm) {
-                        $warn.text('').removeClass('warning success');
-                        return;
-                    }
-
-                    if (password !== confirm) {
-                        $warn.text('Passwords do not match').removeClass('success').addClass('warning');
+                    if (password !== confirmPassword) {
+                        $('#PWarn').text("Passwords do not match.").attr('class','warning');
                     } else {
-                        $warn.text('Passwords match').removeClass('warning').addClass('success');
+                        $('#PWarn').text("Password ok").attr('class','success');
                     }
                 });
 
-                // Also check when password changes
-                $('#password').on('input', function () {
-                    if ($('#passwordc').val()) {
-                        $('#passwordc').trigger('input');
-                    }
+
+
+                // Function to check if the username already exists
+                $('#username').on('input', function () {
+                    var username = $(this).val();
+
+                    $.post('php/checkUsername.php', { "username": username }, function (data) {
+                        if (data === "ok") {
+                            $('#UWarn').text("Username available").attr('class','success');
+                        } else {
+                            $('#UWarn').text("Username not available").attr('class','warning');
+                        }
+                    });
                 });
+
+
             });
         </script>
     </main>

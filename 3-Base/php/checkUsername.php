@@ -16,31 +16,41 @@ if (isset($_POST['username'])) {
     }
 
     // Prepare an SQL SELECT statement to check if the username exists
-    $stmt = $mysqli->prepare("SELECT id FROM users WHERE username = ?");
-    
+    $stmt = $mysqli->prepare("SELECT username FROM trainers WHERE username = ?");
+
+    if (!$stmt) {
+        echo "Prepare failed: (" . $mysqli->errno . ") " . $mysqli->error;
+        http_response_code(500); // Internal Server Error
+        exit;
+    }
+
     // Bind the parameter to the statement
     $stmt->bind_param("s", $username);
-    
+
     // Execute the statement
-    $stmt->execute();
-    
-    // Store the result
-    $stmt->store_result();
-      
-    // Check if a row with the given username exists
-    if ($stmt->num_rows > 0) {
-        // Username exists
-        echo json_encode(['status' => 'error', 'message' => 'Username already exists']);
+    if ($stmt->execute()) {
+        // Store the result
+        $stmt->store_result();
+
+        // Check if a row with the given username exists
+        if ($stmt->num_rows > 0) {
+            echo "exsists";
+            http_response_code(200); // Conflict
+        } else {
+            echo "ok";
+            http_response_code(200); // OK
+        }
     } else {
-        // Username is available
-        echo json_encode(['status' => 'success', 'message' => 'Username available']);
+        echo "Error: " . $stmt->error;
+        http_response_code(500); // Internal Server Error
     }
-    
+
     // Close the statement and database connection
     $stmt->close();
     $mysqli->close();
-    
 } else {
-   // Throw an Error message if the User has not supplied a username to be tested
-   echo json_encode(['status' => 'error', 'message' => 'No username provided']);
+    echo "Invalid POST data.";
+    http_response_code(400); // Bad Request
 }
+
+

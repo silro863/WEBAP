@@ -40,7 +40,42 @@ if ($mysqli->connect_errno) {
 // Change character set to utf8
 $mysqli -> set_charset("utf8");
 
-// Check if Password is correct and log the User in.
-// Return an Error if the user could not be logged in.
-// Return an OK Message if the user and password were correct.
-// Set the $_SESSION['id'] to the user's ID = trainerId
+/* Prepared statement, stage 1: prepare */
+if (!($stmt = $mysqli->prepare("SELECT idTrainer, password, username FROM trainers WHERE username=?"))) {
+    echo "Prepare failed: (" . $mysqli->errno . ") " . $mysqli->error;
+}
+// set the values of the previously defined parameters
+$userName= $mysqli->real_escape_string($_POST['username']);
+
+if (!$stmt->bind_param("s", $userName)) {
+    echo "Binding parameters failed: (" . $stmt->errno . ") " . $stmt->error;
+}
+//execute the prepared statement.
+if (!$stmt->execute()) {
+    echo "Execute failed: (" . $stmt->errno . ") " . $stmt->error;
+}
+
+// save the returned information from the databse.
+$user = $stmt->get_result();
+
+//check if there has been exactly one user found.
+if (mysqli_num_rows($user) == 1) {
+    $password = $_POST['password'];
+    $row = mysqli_fetch_assoc($user);
+    if (password_verify($password, $row['password'])) {
+        $_SESSION["user"] = $row['username'];
+        $_SESSION["id"] = $row['idTrainer'];
+        http_response_code(200); // OK
+    } else {
+        // Password wrong
+        echo("Password incorrect");
+        http_response_code(403); // Forbidden
+    }
+} else {
+    // Username not found
+    echo("Username not found");
+    http_response_code(404); // Not found
+}
+
+
+$mysqli -> close();

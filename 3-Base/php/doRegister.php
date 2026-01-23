@@ -1,8 +1,20 @@
 <?php
-    // Check if the POST parameters are set
-    // Throw an error message if not
-
+// Check if the POST parameters are set
+if (
+    isset($_POST['username']) &&
+    isset($_POST['birthdate']) &&
+    isset($_POST['gender']) &&
+    isset($_POST['hometown']) &&
+    isset($_POST['password']) &&
+    isset($_POST['passwordc'])
+) {
     // Retrieve POST data
+    $username = $_POST['username'];
+    $birthdate = $_POST['birthdate'];
+    $gender = $_POST['gender'];
+    $hometown = $_POST['hometown'];
+    $password = $_POST['password'];
+    $passwordc = $_POST['passwordc'];
 
     // Include database connection details
     require_once("db_credentials.php");
@@ -16,15 +28,34 @@
     }
 
     // Hash the password for security
+    $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
     // Prepare an SQL INSERT statement
-   
+    $stmt = $mysqli->prepare("INSERT INTO trainers (username, birthdate, gender, hometown, password) VALUES (?, ?, ?, ?, ?)");
+
+    if (!$stmt) {
+        echo "Prepare failed: (" . $mysqli->errno . ") " . $mysqli->error;
+        http_response_code(500); // Internal Server Error
+        exit;
+    }
+
     // Bind the parameters to the statement
+    $stmt->bind_param("sssss", $username, $birthdate, $gender, $hometown, $hashedPassword);
 
     // Execute the statement
-    // Upon successfull Registration forward the User to the index page.
-    
-    // Close the statement and database connection
-   
+    if ($stmt->execute()) {
+        echo "User registered successfully!";
+        http_response_code(200); // OK
+    } else {
+        echo "Error: " . $stmt->error;
+        http_response_code(500); // Internal Server Error
+    }
 
+    // Close the statement and database connection
+    $stmt->close();
+    $mysqli->close();
+} else {
+    echo "Incomplete POST data.";
+    http_response_code(400); // Bad Request
+}
 ?>

@@ -35,48 +35,6 @@ if ($mysqli->connect_error) {
 
 // Close the statement and database connection
 
-//here is an example how the data should be formatted:
-/*
-
-<id id="pokemonDataDiv" class="flexed">
-    <section class="section">
-        <h2>Name: Rocky</h2>
-        <p>Level: 11</p>
-        <img id="opponentimg" src="assets/pokedata/thumbnails/133.png" alt="Avatar">
-        <div class="pokemon-health">
-            <div class="health-bar">
-                <div class="current-health full-health" style="width:85%">
-                    <div class="health-text"><span class="current-hp">85</span>/<span class="max-hp">100</span> HP</div>
-                </div>
-            </div>
-        </div>
-    </section>
-    <section class="section">
-        <h2>Name: Eeve</h2>
-        <p>Level: 15</p>
-        <img id="opponentimg" src="assets/pokedata/thumbnails/255.png" alt="Avatar">
-        <div class="pokemon-health">
-            <div class="health-bar">
-                <div class="current-health medium-health" style="width:50%">
-                    <div class="health-text"><span class="current-hp">50</span>/<span class="max-hp">100</span> HP</div>
-                </div>
-            </div>
-        </div>
-    </section>
-    <section class="section">
-        <h2>Name: Torchy</h2>
-        <p>Level: 6</p>
-        <img id="opponentimg" src="assets/pokedata/thumbnails/016.png" alt="Avatar">
-        <div class="pokemon-health">
-            <div class="health-bar">
-                <div class="current-health low-health" style="width:7%">
-                    <div class="health-text"><span class="current-hp">7</span>/<span class="max-hp">100</span> HP</div>
-                </div>
-            </div>
-        </div>
-    </section>
-</id>
-
-*/
+// send JSON Response with all Pokemon if it worked!
 
 ?>

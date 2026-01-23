@@ -16,7 +16,6 @@ $hometowns = array(
     'Viridian City',
 );
 
-// Generate and return the hometowns as HTML option elements
 foreach ($hometowns as $town) {
-    echo '<option value="' . htmlspecialchars($town) . '">';
+    echo ('<option value="' . $town . '">');
 }
