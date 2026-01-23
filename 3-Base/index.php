@@ -50,7 +50,7 @@
             $(document).ready(function() {
                 $("#login").submit(function(e) {
                     e.preventDefault();
-                    $.post("php/dologin.php", $(this).serialize())
+                    $.post("php/doLogin.php", $(this).serialize())
                         .done(function(data) {
                             $("#login").html("Logout");
                             $("main").fadeOut(function(){

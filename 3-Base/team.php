@@ -8,6 +8,8 @@
     <link rel="stylesheet" href="css/main.css">
     <link href="https://fonts.cdnfonts.com/css/g-guarantee" rel="stylesheet">
     <!-- import Libraries -->
+    <script type="text/javascript" src="js/code.jquery.com_jquery-3.7.1.min.js"></script>
+    <script type="text/javascript" src="js/code.jquery.com_ui_1.13.2_jquery-ui.js"></script>
 </head>
 
 <body>
@@ -17,11 +19,17 @@
     </header>
     <?php
     // Check if the session field "id" is set.
-    // If not, kick the user out to the login Page. 
+    // If not, kick the user out to the login Page.
+    session_start();
+    if (!isset($_SESSION['id'])) {
+        header("Location: index.php");
+        exit;
+    }
     ?>
     <nav hidden>
         <ul>
             <li><a id="logout" href="#">Logout</a></li>
+            <li><a href="chat.php">Chat</a></li>
             <li><a href="team.php">My Team</a></li>
             <li><a href="explore.php">Explore</a></li>
             <li><a href="arena.php">Arena</a></li>
@@ -41,7 +49,26 @@
             // 3. Load the Team data from getTeam.php directly on document ready.
             // 4. When finished show the "main" and on load with a fitting effect.
 
-     
+            $(document).ready(function() {
+                // 1. Show the nav with a fitting effect
+                $("nav").removeAttr("hidden").fadeIn(800);
+
+                // 2. Handle logout click
+                $("#logout").click(function(e) {
+                    e.preventDefault();
+                    $.post("php/doLogout.php", function() {
+                        window.location.replace("index.php");
+                    });
+                });
+
+                // 3. Load team data from getTeam.php
+                $.get("php/getTeam.php", function(data) {
+                    $("#pokemonDataDiv").html(data);
+                    
+                    // 4. Show main with a fitting effect when data is loaded
+                    $("main").removeAttr("hidden").fadeIn(800);
+                });
+            });
         </script>
     </main>
 </body>

@@ -19,7 +19,12 @@
         <h1>3. Ajax dynamic content Exercises</h1>
     </header>
     <?php
-   // kick user to index if not logged in.
+    // Kick user to index if not logged in.
+    session_start();
+    if (!isset($_SESSION['id'])) {
+        header("Location: index.php");
+        exit;
+    }
     ?>
     <nav hidden>
         <ul>
